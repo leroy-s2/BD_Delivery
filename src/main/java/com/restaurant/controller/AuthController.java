@@ -36,6 +36,7 @@ public class AuthController {
             userDTO.setFullName(request.get("fullName"));
             userDTO.setPhone(request.get("phone"));
             userDTO.setAddress(request.get("address"));
+            userDTO.setPassword(request.get("password"));
 
             // Create user through service
             UserDTO savedUser = userService.create(userDTO);
@@ -54,6 +55,7 @@ public class AuthController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            e.printStackTrace();
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "Error interno del servidor: " + e.getMessage());
             return ResponseEntity.internalServerError().body(errorResponse);
@@ -77,6 +79,9 @@ public class AuthController {
                     "fullName", user.getFullName(),
                     "role", user.getRole()
             ));
+            System.out.println("Contraseña enviada: " + password);
+            System.out.println("Hash guardado: " + user.getPassword());
+            System.out.println("Match: " + passwordEncoder.matches(password, user.getPassword()));
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {

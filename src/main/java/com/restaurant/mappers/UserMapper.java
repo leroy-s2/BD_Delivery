@@ -13,7 +13,6 @@ public class UserMapper implements BaseMappers<User, UserDTO> {
     @Override
     public UserDTO toDTO(User entity) {
         if (entity == null) return null;
-
         UserDTO dto = new UserDTO();
         dto.setId(entity.getId());
         dto.setEmail(entity.getEmail());
@@ -21,20 +20,22 @@ public class UserMapper implements BaseMappers<User, UserDTO> {
         dto.setPhone(entity.getPhone());
         dto.setAddress(entity.getAddress());
         dto.setRole(entity.getRole().name());
+        // Por seguridad, NO devolver la contraseña en el DTO
         return dto;
     }
 
     @Override
     public User toEntity(UserDTO dto) {
         if (dto == null) return null;
-
         User entity = new User();
         entity.setId(dto.getId());
         entity.setEmail(dto.getEmail());
         entity.setFullName(dto.getFullName());
         entity.setPhone(dto.getPhone());
         entity.setAddress(dto.getAddress());
-        // Note: Role and password should be handled separately for security
+        // Mapeo de la contraseña
+        entity.setPassword(dto.getPassword());
+        // El rol lo asigna el servicio
         return entity;
     }
 

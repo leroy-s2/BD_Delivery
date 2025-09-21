@@ -42,9 +42,17 @@ public class UserServiceImpl implements UserService {
             user.setRole(UserRole.CUSTOMER);
             user.setCreatedAt(LocalDateTime.now());
 
+            // Codificar la contraseña antes de guardar
+            if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            } else {
+                throw new BusinessException("La contraseña es obligatoria");
+            }
+
             User savedUser = userRepository.save(user);
             return userMapper.toDTO(savedUser);
         } catch (Exception e) {
+            e.printStackTrace(); // <-- Agrega esto para ver el error en consola
             throw new ServiceException("Error al crear usuario", e);
         }
     }
@@ -118,6 +126,8 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("Error al verificar email", e);
         }
     }
+
+
 
     @Override
     public UserDTO authenticate(String email, String password) throws ServiceException {

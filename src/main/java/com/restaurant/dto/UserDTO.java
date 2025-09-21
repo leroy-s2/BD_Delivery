@@ -7,18 +7,19 @@ public class UserDTO {
     private String phone;
     private String address;
     private String role;
+    private String password; // <-- AGREGADO
 
-    // Constructors
     public UserDTO() {}
 
-    public UserDTO(String email, String fullName, String phone, String address) {
+    public UserDTO(String email, String fullName, String phone, String address, String password) {
         this.email = email;
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
+        this.password = password;
     }
 
-    // Getters and Setters
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -36,4 +37,7 @@ public class UserDTO {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }
