@@ -1,11 +1,13 @@
 package com.restaurant.controller;
 
 import com.restaurant.dto.UserDTO;
+import com.restaurant.entity.UserRole;
 import com.restaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,11 +40,22 @@ public class AuthController {
             userDTO.setAddress(request.get("address"));
             userDTO.setPassword(request.get("password"));
 
-            // Create user through service
-            UserDTO savedUser = userService.create(userDTO);
+            // 🔑 Set role (default CUSTOMER if not provided)
+            String roleFromRequest = request.get("role");
+            if (roleFromRequest != null) {
+                try {
+                    userDTO.setRole(UserRole.valueOf(roleFromRequest.toUpperCase()).name()); // 👈 enum → String
+                } catch (IllegalArgumentException e) {
+                    userDTO.setRole(UserRole.CUSTOMER.name());
+                }
+            } else {
+                userDTO.setRole(UserRole.CUSTOMER.name());
+            }
 
-            // Separate password handling (should be in service)
-            // For now, we'll handle it here but ideally should be in UserService
+
+
+            // Create user
+            UserDTO savedUser = userService.create(userDTO);
 
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Usuario registrado exitosamente");
@@ -79,6 +92,7 @@ public class AuthController {
                     "fullName", user.getFullName(),
                     "role", user.getRole()
             ));
+
             System.out.println("Contraseña enviada: " + password);
             System.out.println("Hash guardado: " + user.getPassword());
             System.out.println("Match: " + passwordEncoder.matches(password, user.getPassword()));

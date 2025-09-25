@@ -39,7 +39,18 @@ public class UserServiceImpl implements UserService {
             }
 
             User user = userMapper.toEntity(dto);
-            user.setRole(UserRole.CUSTOMER);
+
+            // 👇 Respetar el role que llega, si no viene, default a CUSTOMER
+            if (dto.getRole() != null && !dto.getRole().isEmpty()) {
+                try {
+                    user.setRole(UserRole.valueOf(dto.getRole().toUpperCase()));
+                } catch (IllegalArgumentException e) {
+                    user.setRole(UserRole.CUSTOMER); // fallback
+                }
+            } else {
+                user.setRole(UserRole.CUSTOMER);
+            }
+
             user.setCreatedAt(LocalDateTime.now());
 
             // Codificar la contraseña antes de guardar
@@ -52,10 +63,11 @@ public class UserServiceImpl implements UserService {
             User savedUser = userRepository.save(user);
             return userMapper.toDTO(savedUser);
         } catch (Exception e) {
-            e.printStackTrace(); // <-- Agrega esto para ver el error en consola
+            e.printStackTrace();
             throw new ServiceException("Error al crear usuario", e);
         }
     }
+
 
     @Override
     public UserDTO update(Long id, UserDTO dto) throws ServiceException {
