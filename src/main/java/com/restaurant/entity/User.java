@@ -35,6 +35,15 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
 
+    // Relación ManyToMany con restaurants
+    @ManyToMany
+    @JoinTable(
+            name = "user_restaurants",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "restaurant_id")
+    )
+    private List<Restaurant> restaurants;
+
     // Constructor vacío
     public User() {}
 
@@ -68,4 +77,7 @@ public class User {
 
     public List<Order> getOrders() { return orders; }
     public void setOrders(List<Order> orders) { this.orders = orders; }
+
+    public List<Restaurant> getRestaurants() { return restaurants; }
+    public void setRestaurants(List<Restaurant> restaurants) { this.restaurants = restaurants; }
 }

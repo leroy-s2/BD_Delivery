@@ -27,6 +27,10 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 
+    // Relación ManyToMany con users
+    @ManyToMany(mappedBy = "restaurants")
+    private List<User> users;
+
     // Constructor vacío
     public Restaurant() {}
 
@@ -63,4 +67,7 @@ public class Restaurant {
 
     public List<Reservation> getReservations() { return reservations; }
     public void setReservations(List<Reservation> reservations) { this.reservations = reservations; }
+
+    public List<User> getUsers() { return users; }
+    public void setUsers(List<User> users) { this.users = users; }
 }
