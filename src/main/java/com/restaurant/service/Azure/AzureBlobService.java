@@ -1,6 +1,7 @@
 package com.restaurant.service.Azure;
 
 import com.azure.storage.blob.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,11 +12,10 @@ public class AzureBlobService {
 
     private final BlobContainerClient containerClient;
 
-    public AzureBlobService() {
-        // 🔹 Aquí va tu cadena de conexión completa
-        String connectionString = "DefaultEndpointsProtocol=https;AccountName=deliverirecursos;AccountKey=TTkLVqOExEytBfTOSB9WdO1eRn87nIDz/C6GeBpHRSMcUD8mGmRwAdXVnMYr5TyCxUHOxNCytDPs+ASt7M7yGg==;EndpointSuffix=core.windows.net";
-        String containerName = "imagenmenus"; // 🔹 El nombre del contenedor
-
+    public AzureBlobService(
+            @Value("${azure.storage.connection-string}") String connectionString,
+            @Value("${azure.storage.container-name}") String containerName
+    ) {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()
                 .connectionString(connectionString)
                 .buildClient();
