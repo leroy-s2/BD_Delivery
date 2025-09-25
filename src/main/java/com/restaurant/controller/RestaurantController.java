@@ -5,6 +5,7 @@ import com.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -35,10 +36,10 @@ public class RestaurantController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<RestaurantDTO>> searchRestaurants(@RequestParam String query) {
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<RestaurantDTO>> getRestaurantsByUser(@PathVariable Long userId) {
         try {
-            List<RestaurantDTO> restaurants = restaurantService.searchByName(query);
+            List<RestaurantDTO> restaurants = restaurantService.findByUserId(userId);
             return ResponseEntity.ok(restaurants);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -48,7 +49,10 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<RestaurantDTO> createRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
         try {
-            RestaurantDTO savedRestaurant = restaurantService.create(restaurantDTO);
+            if (restaurantDTO.getUserId() == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            RestaurantDTO savedRestaurant = restaurantService.create(restaurantDTO, restaurantDTO.getUserId());
             return ResponseEntity.ok(savedRestaurant);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -65,13 +69,16 @@ public class RestaurantController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long id) {
+    @PostMapping("/user/{userId}")
+    public ResponseEntity<RestaurantDTO> createRestaurant(
+            @PathVariable Long userId,
+            @RequestBody RestaurantDTO restaurantDTO) {
         try {
-            restaurantService.deleteById(id);
-            return ResponseEntity.noContent().build();
+            RestaurantDTO savedRestaurant = restaurantService.create(restaurantDTO, userId);
+            return ResponseEntity.ok(savedRestaurant);
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.internalServerError().build();
         }
     }
+
 }

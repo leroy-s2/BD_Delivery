@@ -12,6 +12,9 @@ public class RestaurantDTO {
     private Integer capacity;
     private String openTime;
     private String closeTime;
+
+    private Long userId; // 👈 ID del usuario creador
+
     private List<MenuItemDTO> menuItems;
 
     // Constructors
@@ -22,6 +25,20 @@ public class RestaurantDTO {
         this.description = description;
         this.address = address;
         this.phone = phone;
+    }
+
+    public RestaurantDTO(String name, String description, String address, String phone,
+                         String imageUrl, Integer capacity, String openTime, String closeTime,
+                         Long userId) {
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.phone = phone;
+        this.imageUrl = imageUrl;
+        this.capacity = capacity;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.userId = userId;
     }
 
     // Getters and Setters
@@ -51,6 +68,9 @@ public class RestaurantDTO {
 
     public String getCloseTime() { return closeTime; }
     public void setCloseTime(String closeTime) { this.closeTime = closeTime; }
+
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
     public List<MenuItemDTO> getMenuItems() { return menuItems; }
     public void setMenuItems(List<MenuItemDTO> menuItems) { this.menuItems = menuItems; }

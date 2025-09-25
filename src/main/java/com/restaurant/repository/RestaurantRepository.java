@@ -9,4 +9,6 @@ import java.util.List;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     List<Restaurant> findByNameContainingIgnoreCase(String name);
     List<Restaurant> findByAddressContainingIgnoreCase(String address);
+
+    List<Restaurant> findByUsers_Id(Long userId);
 }

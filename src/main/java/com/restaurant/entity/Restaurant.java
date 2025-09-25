@@ -16,18 +16,25 @@ public class Restaurant {
     private String description;
     private String address;
     private String phone;
+
+    @Column(name = "image_url")
     private String imageUrl;
+
     private Integer capacity;
+
+    @Column(name = "open_time")
     private String openTime;
+
+    @Column(name = "close_time")
     private String closeTime;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MenuItem> menuItems;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations;
 
-    // Relación ManyToMany con users
+    // 🔹 Relación ManyToMany con users
     @ManyToMany(mappedBy = "restaurants")
     private List<User> users;
 
