@@ -4,6 +4,7 @@ import com.restaurant.dto.OrderItemDTO;
 import com.restaurant.entity.OrderItem;
 import com.restaurant.mappers.base.BaseMappers;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,13 +21,15 @@ public class OrderItemMapper implements BaseMappers<OrderItem, OrderItemDTO> {
         dto.setPrice(entity.getPrice());
         dto.setSpecialInstructions(entity.getSpecialInstructions());
 
+        // Relación con Order
         if (entity.getOrder() != null) {
             dto.setOrderId(entity.getOrder().getId());
         }
 
+        // Relación con MenuItem
         if (entity.getMenuItem() != null) {
             dto.setMenuItemId(entity.getMenuItem().getId());
-            dto.setMenuItemName(entity.getMenuItem().getName());
+            dto.setMenuItemName(entity.getMenuItem().getName()); // 👈 clave para Android
         }
 
         return dto;
@@ -42,7 +45,10 @@ public class OrderItemMapper implements BaseMappers<OrderItem, OrderItemDTO> {
         entity.setPrice(dto.getPrice());
         entity.setSpecialInstructions(dto.getSpecialInstructions());
 
-        // Order and MenuItem should be set separately
+        // 👇 Nota importante:
+        // No seteamos Order ni MenuItem aquí, porque esas entidades
+        // deben recuperarse con sus repositorios en el ServiceImpl
+        // (por ejemplo, orderRepository.findById(...) )
         return entity;
     }
 

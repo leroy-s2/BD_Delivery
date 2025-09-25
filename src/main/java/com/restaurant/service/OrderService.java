@@ -1,6 +1,7 @@
 package com.restaurant.service;
 
 import com.restaurant.dto.OrderDTO;
+import com.restaurant.dto.OrderItemDTO;
 import com.restaurant.service.base.GenericService;
 import org.hibernate.service.spi.ServiceException;
 import java.util.List;

@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.Arrays;
 
 @Configuration
@@ -33,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/menu-items/**").permitAll()
                         .requestMatchers("/api/v1/reservations/**").permitAll()
                         .requestMatchers("/api/v1/orders/**").permitAll()
+                        .requestMatchers("/api/v1/order-items/**").permitAll() // ✅ ahora permitido
                         .anyRequest().authenticated()
                 );
 

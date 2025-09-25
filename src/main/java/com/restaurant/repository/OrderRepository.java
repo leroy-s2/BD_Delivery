@@ -1,6 +1,7 @@
 package com.restaurant.repository;
 
 import com.restaurant.entity.Order;
+import com.restaurant.entity.OrderItem;
 import com.restaurant.entity.User;
 import com.restaurant.entity.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
